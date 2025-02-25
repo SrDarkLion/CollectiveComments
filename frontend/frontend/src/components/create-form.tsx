@@ -2,7 +2,11 @@
 import { FormEvent, useState } from "react";
 import { z } from "zod";
 
-export default function CreateCodeForm(){
+type CreateCodeFormProps = {
+  onGerarCodigo: (code: string) => void;
+};
+
+export default function CreateCodeForm({onGerarCodigo}:CreateCodeFormProps){
   const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [repassword, setRepassword] = useState<string>('');
@@ -20,8 +24,7 @@ export default function CreateCodeForm(){
   function dataForm(event:FormEvent){
     event.preventDefault();
     const result = formSchema.safeParse({ name, password, repassword });
-    console.log(result.error)
-
+  
     if (!result.success) {
       const formattedErrors: { [key: string]: string } = {};
       result.error.issues.forEach((issue) => {
@@ -30,6 +33,13 @@ export default function CreateCodeForm(){
       setErrors(formattedErrors);
       return;
     }
+
+    const dados ={
+      name:name,
+      password:password,
+    }
+
+    onGerarCodigo(dados.name);
     setErrors({});
   }
 
@@ -53,7 +63,6 @@ export default function CreateCodeForm(){
   
       <div className="flex flex-col gap-2">
         <label htmlFor="password" className="font-semibold">Senha</label>
-
         <div className="relative">
           <input
             type="password"
@@ -68,7 +77,6 @@ export default function CreateCodeForm(){
 
       <div className="flex flex-col gap-2">
         <label htmlFor="repeatpassoword" className="font-semibold">Repetir Senha</label>
-
         <div className="relative">
           <input
             type="password"
@@ -83,11 +91,10 @@ export default function CreateCodeForm(){
 
       <button
         type="submit"
-        className="block w-full rounded-lg bg-gray-950 hover:bg-gray-900 px-5 py-3 text-sm font-medium text-white"
+        className="block w-full rounded-lg bg-gray-950 hover:bg-gray-900 px-5 py-3 text-sm font-medium text-white" 
       >
         Gerar Código
       </button>
     </form>
-
   )
 }
