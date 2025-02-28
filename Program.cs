@@ -24,6 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+
 app.MapPost("/companies", async (
     AppDbContext dbCotext,
     [FromBody] CreateCompanyDTO companyDTO,
@@ -83,11 +85,11 @@ app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, Cre
 
 app.MapGet("/feedbacks/{code}", async (AppDbContext dbContext, string code) =>
 {
+    var feedback = await dbContext.Feedbacks.FirstOrDefaultAsync(f => f.CompanyCode == code);
 
-    var feedback = await dbContext.Feedbacks.FirstOrDefaultAsync(c => c.CompanyCode == code);
     if (feedback == null)
     {
-        return Results.NotFound("Company Not Found.");
+        return Results.NotFound("Feedback Not Found.");
     }
 
     var feedbacks = await dbContext.Feedbacks
@@ -96,6 +98,7 @@ app.MapGet("/feedbacks/{code}", async (AppDbContext dbContext, string code) =>
         .ToListAsync();
 
     return Results.Ok(feedbacks);
+
 });
 
 
