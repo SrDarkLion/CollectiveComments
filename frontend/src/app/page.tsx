@@ -1,5 +1,5 @@
 'use client'
-import CreateCodeForm from "@/components/create-form"
+import CreateCodeForm from "@/components/create-code-form"
 import { useState } from "react";
 import { FiCopy } from "react-icons/fi";
 
