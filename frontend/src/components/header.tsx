@@ -1,13 +1,11 @@
-"use client"; // Indica que este é um Client Component
+"use client"; 
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Substitui o useRouter
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const pathname = usePathname(); // Obtém a rota atual
-
-  // Função para verificar se o link está ativo
+  const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
 
   return (
@@ -25,11 +23,10 @@ export default function Header() {
           <li>
             <Link
               href="/"
-              className={`text-lg font-medium ${
-                isActive("/")
-                  ? "text-indigo-600 underline" 
-                  : "text-gray-700 hover:text-indigo-500" 
-              }`}
+              className={`text-lg font-medium ${isActive("/")
+                ? "text-indigo-600 underline"
+                : "text-gray-700 hover:text-indigo-500"
+                }`}
             >
               Criar Código
             </Link>
@@ -37,11 +34,10 @@ export default function Header() {
           <li>
             <Link
               href="/send-feedback"
-              className={`text-lg font-medium ${
-                isActive("/send-feedback")
-                  ? "text-indigo-600 underline" 
-                  : "text-gray-700 hover:text-indigo-500"
-              }`}
+              className={`text-lg font-medium ${isActive("/send-feedback")
+                ? "text-indigo-600 underline"
+                : "text-gray-700 hover:text-indigo-500"
+                }`}
             >
               Enviar Feedback
             </Link>
@@ -49,16 +45,15 @@ export default function Header() {
           <li>
             <Link
               href="/list-feedbacks"
-              className={`text-lg font-medium ${
-                isActive("/list-feedbacks")
-                  ? "text-indigo-600 underline" 
-                  : "text-gray-700 hover:text-indigo-500"
-              }`}
+              className={`text-lg font-medium ${isActive("/list-feedbacks")
+                ? "text-indigo-600 underline"
+                : "text-gray-700 hover:text-indigo-500"
+                }`}
             >
               Listar Feedback
             </Link>
           </li>
-       
+
         </ul>
       </nav>
     </header>
