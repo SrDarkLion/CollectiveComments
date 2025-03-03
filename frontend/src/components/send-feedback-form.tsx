@@ -2,9 +2,6 @@
 import { FormEvent, useState } from "react";
 import { z } from "zod";
 
-
-
-
 export default function SendFeedbackForm(){
   const [code, setCode] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -34,14 +31,14 @@ export default function SendFeedbackForm(){
   }
 
   return(
-    <form  onSubmit={dataForm} className="space-y-4 border rounded-md p-4 sm:p-6 lg:p-8">
+    <form  onSubmit={dataForm} className="space-y-4 ">
       <div className="flex flex-col gap-2">
         <label htmlFor="code" className="font-semibold">Código Empresa</label>
 
         <div className="relative">
           <input
             type="text"
-            className="w-full rounded-lg border border-gray-200 p-2 pe-12 text-base shadow-xs"
+            className="w-full rounded-lg border h-10 border-gray-200 p-2 text-base shadow-xs"
             name="code"
             placeholder=""
             onChange={(e)=> setCode(e.target.value)}
@@ -51,9 +48,12 @@ export default function SendFeedbackForm(){
       </div>
   
       <div className="flex flex-col gap-2">
-        <label htmlFor="password" className="font-semibold">Tipo do FeedBack</label>
+        <label htmlFor="type" className="font-semibold">Tipo do FeedBack</label>
         <div className="relative">
-          <select name="type" id="" onChange={(e)=> setType(e.target.value)}>
+          <select
+            className="mt-1.5 w-full h-10 p-2 rounded-lg border border-gray-200border border-gray-200 text-gray-700 text-base" 
+            name="type" 
+            onChange={(e)=> setType(e.target.value)}>
             <option value="">Selecionar</option>
             <option value="suggestion">Sugestão</option>
             <option value="criticism">Crítica</option>
@@ -66,7 +66,12 @@ export default function SendFeedbackForm(){
       <div className="flex flex-col gap-2">
         <label htmlFor="mensage" className="font-semibold">Mensagem</label>
         <div className="relative">
-          <textarea name="mensage" onChange={(e)=> setMensage(e.target.value)}></textarea>
+          <textarea
+            className="w-full rounded-lg border border-gray-200 p-2 text-base shadow-xs" 
+            name="mensage"
+            placeholder="Escreva seu feedback...." 
+            onChange={(e)=> setMensage(e.target.value)}>
+            </textarea>
         </div>
         {errors.mensage && <p className="text-red-500 text-sm mt-1">{errors.mensage}</p>}
       </div>
@@ -75,7 +80,7 @@ export default function SendFeedbackForm(){
         type="submit"
         className="block w-full rounded-lg bg-gray-950 hover:bg-gray-900 px-5 py-3 text-sm font-medium text-white" 
       >
-        Gerar Código
+        Enviar
       </button>
     </form>
   )
