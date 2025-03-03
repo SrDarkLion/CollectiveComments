@@ -11,7 +11,7 @@ export default function SendFeedbackForm(){
   const formSchema = z.object({
       code: z.string().min(5, { message: 'Insira o Código da empresa' }),
       type: z.string().min(1, { message: 'Selecione o tipo do feeback' }),
-      mensage: z.string().min(6, { message: 'Escreva deu feedback' }),
+      mensage: z.string().min(6, { message: 'Escreva seu feedback' }),
     })
 
   function dataForm(event:FormEvent){
@@ -31,7 +31,7 @@ export default function SendFeedbackForm(){
   }
 
   return(
-    <form  onSubmit={dataForm} className="space-y-4 ">
+    <form  onSubmit={dataForm} className="space-y-4">
       <div className="flex flex-col gap-2">
         <label htmlFor="code" className="font-semibold">Código Empresa</label>
 

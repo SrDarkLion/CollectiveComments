@@ -44,7 +44,7 @@ export default function CreateCodeForm({onGerarCodigo}:CreateCodeFormProps){
   }
 
   return(
-    <form  onSubmit={dataForm} className="space-y-4 border rounded-md p-4 sm:p-6 lg:p-8">
+    <form  onSubmit={dataForm} className="space-y-4">
       <div className="flex flex-col gap-2">
         <label htmlFor="name" className="font-semibold">Nome da Empresa</label>
 

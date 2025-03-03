@@ -18,8 +18,9 @@ export default function Home() {
   return (
     <div className="flex justify-center pt-5">
       <div className="mx-auto max-w-xl w-full px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-lg font-medium mb-8">Gerar Código FeedBack</p>
-        <div className="mx-auto w-full">
+        <div className="mx-auto w-full border rounded-lg p-4 sm:p-6 lg:p-8 bg-white shadow-md">
+          <p className="text-2xl font-medium mb-8 text-indigo-600 flex flex-col text-center">Gerar Código FeedBack <span className="text-black text-base font-normal">A empresa agradece seu feedback</span></p>
+
           <CreateCodeForm onGerarCodigo={handleCreateCode} />
           {code && (
             <div className="sm:p-6 lg:p-8 border-2 border-green-500 rounded-md shadow-lg shadow-green-200 mt-4">
