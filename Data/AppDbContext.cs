@@ -8,10 +8,17 @@ namespace CollectiveComments
         public DbSet<Company> Companies { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
 
+        private readonly IConfiguration _configuration;
+
+        public AppDbContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("host=localhost;port=5432;database=co;username=postgres;password=money");
-            base.OnConfiguring(optionsBuilder);
+            var connectionString = _configuration["DATABASE"];
+            optionsBuilder.UseNpgsql(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
