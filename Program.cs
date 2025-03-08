@@ -11,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+});
 
 builder.Services.AddValidatorsFromAssemblyContaining<CompanyDTOValidator>();
 
@@ -83,22 +94,38 @@ app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, Cre
     return Results.Created($"/feedback/{code}{feedbackDTO}", feedbackDTO);
 });
 
-app.MapGet("/feedbacks/{code}", async (AppDbContext dbContext, string code) =>
+app.MapPost("/feedbacks/", async (
+    AppDbContext dbContext,
+    [FromBody] GetAllFeedbackDTO dto) =>
 {
-    var feedback = await dbContext.Feedbacks.FirstOrDefaultAsync(f => f.CompanyCode == code);
+    var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.Code == dto.Code);
 
-    if (feedback == null)
+    if (company == null)
     {
-        return Results.NotFound("Feedback Not Found.");
+        return Results.NotFound("Company Not Found.");
+    }
+
+    if (!BCrypt.Net.BCrypt.Verify(dto.Password, company.Password))
+    {
+        return Results.Unauthorized();
     }
 
     var feedbacks = await dbContext.Feedbacks
-        .Where(f => f.CompanyCode == feedback.CompanyCode)
+        .Where(f => f.CompanyCode == dto.Code)
         .OrderByDescending(f => f.CreatedAt)
         .ToListAsync();
 
-    return Results.Ok(feedbacks);
+    var filteredFeedbacks = feedbacks.Select(f => new
+    {
+        f.CompanyCode,
+        CompanyName = f.Company.Name,
+        f.Message,
+        f.Type,
+        f.CreatedAt
+    }).ToList();
 
+
+    return Results.Ok(filteredFeedbacks);
 });
 
 
