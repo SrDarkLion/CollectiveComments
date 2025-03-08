@@ -36,6 +36,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+app.MapGet("/check", () => Results.Ok("OK"));
 
 app.MapPost("/companies", async (
     AppDbContext dbCotext,

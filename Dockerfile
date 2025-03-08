@@ -13,6 +13,6 @@ WORKDIR /app
 
 COPY --from=build /app/dist/ /app
 
-EXPOSE 5238
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "CollectiveComments.dll"]
