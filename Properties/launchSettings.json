@@ -4,6 +4,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": false,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -12,10 +13,11 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
+      "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5238",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE": "host=localhost;port=5432;database=co;username=postgres;password=money"
+        "DATABASE": "host=localhost port=5432 dbname=co user=postgres password=money connect_timeout=10 sslmode=prefer"
       }
     }
   }
