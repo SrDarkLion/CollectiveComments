@@ -1,6 +1,35 @@
 import CardFeedback from "@/components/card-feedback";
 export default function listFeedback() {
 
+  type FeebackType={
+    id:number
+    type: string,
+    date: string,
+    message: string
+  }
+
+  const dataFeedback: FeebackType[] = [
+    {
+      id:1,
+      type: "Sugestão",
+      date: "06 de fev",
+      message: "Supporting line text lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      id:2,
+      type: "Crítica",
+      date: "06 de fev",
+      message: "Supporting line text lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      id:3,
+      type: "Comentário",
+      date: "06 de fev",
+      message: "Supporting line text lorem ipsum dolor sit amet, consectetur"
+    }
+  ]
+  
+
   return (
     <div className="flex justify-center py-5">
       <div className="mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8">
@@ -9,7 +38,7 @@ export default function listFeedback() {
 
           <div>
             <div className="">
-              <div className="flex justify-end gap-8 ml-auto">
+              <div className="flex justify-end gap-8 ml-auto mb-4">
                 <div className="relative flex items-center gap-5">
                   <div className="border flex flex-col">
                     <select className="w-full" name="" id="">
@@ -30,10 +59,9 @@ export default function listFeedback() {
                 </div>
               </div>
             </div>
-
-            <div className="mt-5">
-              <CardFeedback />
-            </div>
+            <div className="flex flex-col gap-4">
+              {dataFeedback.map(feedback => <CardFeedback feedback={feedback} key={feedback.id}/>)}
+            </div> 
           </div>
         </div>
       </div>
