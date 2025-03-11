@@ -10,7 +10,7 @@ O CollectiveComments é um sistema desenvolvido para facilitar o gerenciamento d
 
 ✅ Cadastro de Empresas – As empresas podem se registrar no sistema informando nome e senha, e um código único é gerado automaticamente com base no nome e no ID.
 
-✅ Envio de Feedbacks – Usuários podem enviar feedbacks associados a uma empresa, utilizando o código gerado (em vez de um ID UUID tradicional).
+✅ Envio de Feedbacks – Usuários podem enviar feedbacks associados a uma empresa, utilizando o código gerado (em vez de um ID tradicional).
 
 ✅ Listagem de Feedbacks – Empresas podem visualizar os feedbacks recebidos com base no código único gerado (para segurança, também é requirido a senha cadastrada pela empresa).
 
