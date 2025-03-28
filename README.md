@@ -30,33 +30,6 @@ O CollectiveComments é um sistema desenvolvido para facilitar o gerenciamento d
 - Swagger
 - Postman
 
-## 📃 Estrutura de Pastas do Projeto
-
-```text
-│
-├── Data/
-│   └── AppDbContext.cs
-├── Assets/img/
-│   └── capa.png
-├── DTO/
-│   ├── CreateCompanyDTO.cs
-|   └── CreateFeedbackDTO.cs
-├── Validator/
-│   ├── CompanyDTOValidator.cs
-|   └── FeedbackDTOValidator.cs
-├── Migrations
-│   └── ...
-├── Models/
-│   ├── Company.cs
-|   └── Feedback.cs
-├── Properties/
-|   └── ...
-├── src/enum/
-|   └── FeedbackType.cs
-├── ...
-└── Program.cs
-```
-
 ### Frontend
 
 - TypeScript

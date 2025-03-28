@@ -18,7 +18,7 @@ namespace CollectiveComments
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = _configuration["DATABASE"];
-            optionsBuilder.UseNpgsql(connectionString);
+            optionsBuilder.UseNpgsql("host=localhost;port=5432;database=co;username=postgres;password=money;timeout=10;sslmode=prefer;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace CollectiveComments
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Company)
                 .WithMany(f => f.Feedbacks)
-                .HasForeignKey(f => f.CompanyCode)
+                .HasForeignKey(f => f.CompanyId)
                 .HasPrincipalKey(c => c.Code);
 
 

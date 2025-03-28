@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar a conexão com o banco de dados PostgreSQL
+var connectionString = builder.Configuration["DATABASE"];
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AppDbContext>();
@@ -27,15 +32,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<CompanyDTOValidator>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
 
 app.MapGet("/check", () => Results.Ok("OK"));
 
@@ -85,8 +85,9 @@ app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, Cre
     var newFeedback = new Feedback
     {
         Id = Guid.NewGuid(),
-        CompanyCode = code,
+        Type = feedbackDTO.Type,
         Message = feedbackDTO.Message,
+        CompanyId = company.Id.ToString(),
         CreatedAt = DateTime.UtcNow
     };
 
@@ -96,7 +97,7 @@ app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, Cre
     return Results.Created($"/feedback/{code}{feedbackDTO}", feedbackDTO);
 });
 
-app.MapPost("/feedbacks/", async (
+app.MapPost("/feedbacks", async (
     AppDbContext dbContext,
     [FromBody] GetAllFeedbackDTO dto) =>
 {
@@ -113,21 +114,21 @@ app.MapPost("/feedbacks/", async (
     }
 
     var feedbacks = await dbContext.Feedbacks
-        .Where(f => f.CompanyCode == dto.Code)
+        .Where(f => f.CompanyId == company.Id.ToString())
         .OrderByDescending(f => f.CreatedAt)
+        .Select(f => new
+        {
+            f.Message,
+            f.Type,
+            f.CreatedAt
+        })
         .ToListAsync();
 
-    var filteredFeedbacks = feedbacks.Select(f => new
+    return Results.Ok(new
     {
-        f.CompanyCode,
-        CompanyName = f.Company.Name,
-        f.Message,
-        f.Type,
-        f.CreatedAt
-    }).ToList();
-
-
-    return Results.Ok(filteredFeedbacks);
+        CompanyName = company.Name,
+        Feedbacks = feedbacks
+    });
 });
 
 

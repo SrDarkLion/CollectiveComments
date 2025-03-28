@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectiveComments.Models
@@ -15,11 +14,11 @@ namespace CollectiveComments.Models
         
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         
         [Required]
         [StringLength(100)]
-        public string Password { get; set; }
+        public required string Password { get; set; }
         
         [Required]
         [StringLength(80)]

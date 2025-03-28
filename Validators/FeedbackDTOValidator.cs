@@ -7,11 +7,6 @@ namespace CollectiveComments.Validators
     {
         public FeedbackDTOValidator()
         {
-            RuleFor(f => f.CompanyCode)
-                .NotEmpty().WithMessage("The company code is mandatory.")
-                .MinimumLength(0)
-                .MaximumLength(40).WithMessage("The company code can have a maximum of 40 characters.");
-
             RuleFor(f => f.Message)
                 .NotEmpty().WithMessage("The feedback message is mandatory.")
                 .MinimumLength(0)

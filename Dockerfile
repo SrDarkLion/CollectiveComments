@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY ./ /app
 
-RUN dotnet restore && \
-  dotnet publish "./CollectiveComments.csproj" --output "/app/dist" --configuration Release --no-restore
+RUN dotnet publish "./CollectiveComments.csproj" --output "/app/dist" --configuration Release
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS prd
 

@@ -67,9 +67,8 @@ namespace CollectiveComments.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<string>("CompanyCode")
+                    b.Property<string>("CompanyId")
                         .IsRequired()
-                        .HasMaxLength(80)
                         .HasColumnType("character varying(80)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -87,7 +86,7 @@ namespace CollectiveComments.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyCode");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("feedbacks");
                 });
@@ -96,7 +95,7 @@ namespace CollectiveComments.Migrations
                 {
                     b.HasOne("CollectiveComments.Models.Company", "Company")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("CompanyCode")
+                        .HasForeignKey("CompanyId")
                         .HasPrincipalKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

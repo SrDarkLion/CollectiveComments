@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CollectiveComments.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250222201440_CompanyFeedbackTableRelation")]
-    partial class CompanyFeedbackTableRelation
+    [Migration("20250327190906_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,9 +70,8 @@ namespace CollectiveComments.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<string>("CompanyCode")
+                    b.Property<string>("CompanyId")
                         .IsRequired()
-                        .HasMaxLength(80)
                         .HasColumnType("character varying(80)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -90,7 +89,7 @@ namespace CollectiveComments.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyCode");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("feedbacks");
                 });
@@ -99,7 +98,7 @@ namespace CollectiveComments.Migrations
                 {
                     b.HasOne("CollectiveComments.Models.Company", "Company")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("CompanyCode")
+                        .HasForeignKey("CompanyId")
                         .HasPrincipalKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

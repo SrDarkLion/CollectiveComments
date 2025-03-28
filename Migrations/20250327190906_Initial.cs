@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CollectiveComments.Migrations
 {
     /// <inheritdoc />
-    public partial class RequestCodeInsteadofId : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace CollectiveComments.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_companies", x => x.Id);
+                    table.UniqueConstraint("AK_companies_Code", x => x.Code);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,8 +33,9 @@ namespace CollectiveComments.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Message = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    CompanyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    CompanyId = table.Column<string>(type: "character varying(80)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +44,7 @@ namespace CollectiveComments.Migrations
                         name: "FK_feedbacks_companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "companies",
-                        principalColumn: "Id",
+                        principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
                 });
 
