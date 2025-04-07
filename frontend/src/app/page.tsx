@@ -1,28 +1,21 @@
 'use client'
 import CreateCodeForm from "@/components/create-code-form"
-import { useState } from "react";
-import { FiCopy } from "react-icons/fi";
+// import { useState } from "react";
+// import { FiCopy } from "react-icons/fi";
 
 export default function Home() {
-  const [code, setCode] = useState<string>('');
+ 
 
-  function handleCreateCode(codeReturn: string) {
-    setCode(codeReturn.slice(0, 5) + '-123');
-  }
-
-  const handleCopiarCodigo = () => {
-    navigator.clipboard.writeText(code);
-    alert('Código copiado para a área de transferência!');
-  };
+ 
 
   return (
     <div className="flex justify-center pt-5">
       <div className="mx-auto max-w-xl w-full px-4 sm:px-6 lg:px-8">
         <div className="mx-auto w-full border rounded-lg p-4 sm:p-6 lg:p-8 bg-white shadow-md">
-          <p className="text-2xl font-medium mb-8 text-indigo-600 flex flex-col text-center">Gerar Código FeedBack <span className="text-black text-base font-normal">A empresa agradece seu feedback</span></p>
+          <p className="text-2xl font-medium mb-8 text-indigo-600 flex flex-col text-center">Gerar Código FeedBack</p>
 
-          <CreateCodeForm onGerarCodigo={handleCreateCode} />
-          {code && (
+          <CreateCodeForm  />
+          {/* {code && (
             <div className="sm:p-6 lg:p-8 border-2 border-green-500 rounded-md shadow-lg shadow-green-200 mt-4">
               <div className="flex justify-between items-end gap-3">
                 <div className="w-full flex flex-col gap-2">
@@ -44,7 +37,7 @@ export default function Home() {
               </div>
               <p className="mt-1 text-red-500 font-semibold">Observação: Salvar código em um local seguro  </p>
             </div>
-          )}
+          )} */}
 
         </div>
       </div>

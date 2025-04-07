@@ -1,4 +1,4 @@
-import SendFeedbackForm from "@/components/send-feedback-form";
+import SendFeedbackForm from "@/app/send-feedback/send-feedback-form";
 
 export default function sendFeedback() {
 

@@ -1,3 +1,4 @@
+"use server"
 import { z } from "zod";
 
 const formSchema = z
@@ -21,7 +22,7 @@ export async function dataForm(
   prevState: { errors: { [key: string]: string } | null; success?: boolean; code?: string },
   formData: FormData 
 ): Promise<{ errors: { [key: string]: string } | null; success?: boolean; code?: string }> {
- 
+  
   const name = formData.get("name") as string;
   const password = formData.get("password") as string;
   const repassword = formData.get("repassword") as string;
