@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CollectiveComments.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250327190906_Initial")]
+    [Migration("20250425185909_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace CollectiveComments.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -60,7 +60,7 @@ namespace CollectiveComments.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("companies");
+                    b.ToTable("companies", (string)null);
                 });
 
             modelBuilder.Entity("CollectiveComments.Models.Feedback", b =>
@@ -70,7 +70,7 @@ namespace CollectiveComments.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<string>("CompanyId")
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("character varying(80)");
 
@@ -89,16 +89,16 @@ namespace CollectiveComments.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("Code");
 
-                    b.ToTable("feedbacks");
+                    b.ToTable("feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("CollectiveComments.Models.Feedback", b =>
                 {
                     b.HasOne("CollectiveComments.Models.Company", "Company")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("Code")
                         .HasPrincipalKey("Code")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

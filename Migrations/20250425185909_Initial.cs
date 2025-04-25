@@ -35,14 +35,14 @@ namespace CollectiveComments.Migrations
                     Message = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    CompanyId = table.Column<string>(type: "character varying(80)", nullable: false)
+                    Code = table.Column<string>(type: "character varying(80)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_feedbacks_companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_feedbacks_companies_Code",
+                        column: x => x.Code,
                         principalTable: "companies",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
@@ -61,9 +61,9 @@ namespace CollectiveComments.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_feedbacks_CompanyId",
+                name: "IX_feedbacks_Code",
                 table: "feedbacks",
-                column: "CompanyId");
+                column: "Code");
         }
 
         /// <inheritdoc />

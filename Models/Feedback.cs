@@ -20,8 +20,8 @@ namespace CollectiveComments.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("CompanyId")]
-        public required string CompanyId { get; set; }
+        [ForeignKey("Code")]
+        public required string Code { get; set; }
 
         public virtual Company? Company { get; set; }
     }

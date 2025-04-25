@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar a conexão com o banco de dados PostgreSQL
 var connectionString = builder.Configuration["DATABASE"];
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -16,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AppDbContext>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
@@ -73,13 +73,26 @@ app.MapPost("/companies", async (
     return Results.Created($"/companies/{newCompany.Code}", newCompany);
 });
 
-app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, CreateFeedbackDTO feedbackDTO) =>
+app.MapPost("/feedbacks/{code}", async (
+    AppDbContext dbContext,
+    string code,
+    [FromBody] CreateFeedbackDTO feedbackDTO,
+    IValidator<CreateFeedbackDTO> validator) =>
 {
+    var validationResult = await validator.ValidateAsync(feedbackDTO);
+    if (!validationResult.IsValid)
+    {
+        return Results.BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+    }
 
-    var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.Code == code);
+    code = code.Trim().ToLower();
+
+    var company = await dbContext.Companies
+        .FirstOrDefaultAsync(c => c.Code.ToLower() == code);
+
     if (company == null)
     {
-        return Results.NotFound("Company Not Found.");
+        return Results.NotFound($"Company Not Found with code: {code}");
     }
 
     var newFeedback = new Feedback
@@ -87,48 +100,62 @@ app.MapPost("/feedbacks/{code}", async (AppDbContext dbContext, string code, Cre
         Id = Guid.NewGuid(),
         Type = feedbackDTO.Type,
         Message = feedbackDTO.Message,
-        CompanyId = company.Id.ToString(),
+        Code = company.Code,
         CreatedAt = DateTime.UtcNow
     };
 
     dbContext.Feedbacks.Add(newFeedback);
     await dbContext.SaveChangesAsync();
 
-    return Results.Created($"/feedback/{code}{feedbackDTO}", feedbackDTO);
+    return Results.Created($"/feedbacks/{code}", new
+    {
+        Id = newFeedback.Id,
+        Type = newFeedback.Type,
+        Message = newFeedback.Message,
+        CreatedAt = newFeedback.CreatedAt
+    });
+
 });
 
 app.MapPost("/feedbacks", async (
     AppDbContext dbContext,
     [FromBody] GetAllFeedbackDTO dto) =>
 {
-    var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.Code == dto.Code);
-
-    if (company == null)
+    try
     {
-        return Results.NotFound("Company Not Found.");
-    }
+        var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.Code == dto.Code);
 
-    if (!BCrypt.Net.BCrypt.Verify(dto.Password, company.Password))
-    {
-        return Results.Unauthorized();
-    }
-
-    var feedbacks = await dbContext.Feedbacks
-        .Where(f => f.CompanyId == company.Id.ToString())
-        .OrderByDescending(f => f.CreatedAt)
-        .Select(f => new
+        if (company == null)
         {
-            f.Message,
-            f.Type,
-            f.CreatedAt
-        })
-        .ToListAsync();
+            return Results.NotFound("Company Not Found.");
+        }
 
-    return Results.Ok(new
+        if (!BCrypt.Net.BCrypt.Verify(dto.Password, company.Password))
+        {
+            return Results.Unauthorized();
+        }
+
+        var feedbacks = await dbContext.Feedbacks
+            .Where(f => f.Code == company.Code)
+            .OrderByDescending(f => f.CreatedAt)
+            .Select(f => new
+            {
+                f.Message,
+                f.Type,
+                f.CreatedAt
+            })
+            .ToListAsync();
+
+        return Results.Ok(new
+        {
+            CompanyName = company.Name,
+            Feedbacks = feedbacks
+        });
+    }
+    catch (Exception ex)
     {
-        CompanyName = company.Name,
-        Feedbacks = feedbacks
-    });
+        return Results.Problem(ex.Message);
+    }
 });
 
 
