@@ -26,7 +26,6 @@ export async function dataForm(
   const name = formData.get("name") as string;
   const password = formData.get("password") as string;
   const repassword = formData.get("repassword") as string;
-
   const result = formSchema.safeParse({ name, password, repassword });
 
   if (!result.success) {
