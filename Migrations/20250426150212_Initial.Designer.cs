@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CollectiveComments.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250425185909_Initial")]
+    [Migration("20250426150212_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

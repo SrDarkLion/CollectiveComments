@@ -35,8 +35,6 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-//app.UseHttpsRedirection();
-
 app.MapGet("/check", () => Results.Ok("OK"));
 
 app.MapPost("/companies", async (
@@ -70,7 +68,12 @@ app.MapPost("/companies", async (
 
     await dbCotext.SaveChangesAsync();
 
-    return Results.Created($"/companies/{newCompany.Code}", newCompany);
+    return Results.Created($"/companies/{newCompany.Code}", new
+    {
+        Id = newCompany.Id,
+        Name = newCompany.Name,
+        CreatedAt = newCompany.CreatedAt
+    });
 });
 
 app.MapPost("/feedbacks/{code}", async (
