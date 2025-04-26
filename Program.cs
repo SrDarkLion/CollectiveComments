@@ -35,7 +35,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/check", () => Results.Ok("OK"));
+app.MapGet("/check", () => Results.Ok("OK")).WithTags("Health");
 
 app.MapPost("/companies", async (
     AppDbContext dbCotext,
@@ -74,7 +74,7 @@ app.MapPost("/companies", async (
         Name = newCompany.Name,
         CreatedAt = newCompany.CreatedAt
     });
-});
+}).WithTags("Companies");
 
 app.MapPost("/feedbacks/{code}", async (
     AppDbContext dbContext,
@@ -118,8 +118,7 @@ app.MapPost("/feedbacks/{code}", async (
         CreatedAt = newFeedback.CreatedAt
     });
 
-});
-
+}).WithTags("Feedbacks");
 app.MapPost("/feedbacks", async (
     AppDbContext dbContext,
     [FromBody] GetAllFeedbackDTO dto) =>
@@ -159,7 +158,7 @@ app.MapPost("/feedbacks", async (
     {
         return Results.Problem(ex.Message);
     }
-});
+}).WithTags("Feedbacks");
 
 
 app.Run();
