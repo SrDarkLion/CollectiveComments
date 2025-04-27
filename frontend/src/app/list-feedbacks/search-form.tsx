@@ -27,9 +27,9 @@ export default function SearchForm({
   });
 
   return (
-    <div className="border rounded-lg p-5">
+    <div className="border rounded-lg p-5 mb-10">
       <form action={formAction} className="flex items-center gap-4">
-        <div className="flex flex-col flex-1 gap-2 pb-6">
+        <div className="flex flex-col flex-1 gap-2">
           <label htmlFor="code" className="font-semibold">Código Empresa</label>
           <div className="relative">
             <input
@@ -37,7 +37,7 @@ export default function SearchForm({
               className="w-full rounded-lg border h-10 border-gray-200 p-2 text-base shadow-xs"
               name="code"
               placeholder="CODE..."
-              required
+              
               disabled={isLoading}
             />
             {state.errors?.code && (
@@ -46,7 +46,7 @@ export default function SearchForm({
           </div>
         </div>
 
-        <div className="flex flex-col flex-1 gap-2 pb-6">
+        <div className="flex flex-col flex-1 gap-2">
           <label htmlFor="password" className="font-semibold">Senha</label>
           <div className="relative flex gap-2">
             <input
@@ -54,7 +54,7 @@ export default function SearchForm({
               className="w-full rounded-lg border h-10 border-gray-200 p-2 text-base shadow-xs"
               name="password"
               placeholder="Senha"
-              required
+             
               disabled={isLoading}
             />
             <button
