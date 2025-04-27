@@ -72,6 +72,7 @@ app.MapPost("/companies", async (
     {
         Id = newCompany.Id,
         Name = newCompany.Name,
+        Code = newCompany.Code,
         CreatedAt = newCompany.CreatedAt
     });
 }).WithTags("Companies");
