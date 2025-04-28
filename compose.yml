@@ -1,0 +1,23 @@
+services:
+  co-db:
+    image: docker.io/bitnami/postgresql:17.0.0
+    container_name: co-db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=money
+      - POSTGRESQL_DATABASE=co
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - co-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "PGPASSWORD=money psql -h localhost -U postgres -d co -c 'SELECT 1;'" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  co-db:
